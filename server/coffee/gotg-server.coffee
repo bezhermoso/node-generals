@@ -15,7 +15,7 @@ io.on 'connection', (socket) ->
   socket.on 'disconnect', () ->
     console.log 'user disconnected.'
 
-  socket.on 'game', (game) ->
+  socket.on 'new game', (game) ->
     console.log "Game creation request: #{game}"
     gameData = JSON.parse(game)
     gotg.create(1, gameData.name)

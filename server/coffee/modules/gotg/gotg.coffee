@@ -6,17 +6,17 @@ Game = (state) -> null
 
 GOTG = () ->
   couch = new(cradle.Connection)()
-  db = couch.database('gotg')
+  db = couch.database 'gotg'
 
-  db.create (err) -> console.error err
   require './db'
-    .attach_views db
+    .initialize db, console.error
 
   create = (playerId, name) ->
     deferred = Q.defer()
-    db.save uuid.v4(), { player1: playerId, moves: [], type: 'game', status: 'open', name: name },
+    db.save uuid.v4(), { player1: playerId, pieces: [], type: 'game', status: 'open', name: name },
       (err, res) ->
         if err
+          console.error 'Error when creating game:'
           console.error err
           deferred.reject err
         else
@@ -28,6 +28,7 @@ GOTG = () ->
     deferred = Q.defer()
     db.view 'games/open', (err, res) ->
       if err
+        console.log 'Error when listing open games:'
         console.error err
         deferred.reject err
       else
